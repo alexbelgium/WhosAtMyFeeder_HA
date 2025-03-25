@@ -19,8 +19,8 @@ config = load_config()
 firstmessage = True
 
 DBPATH = config["database"]["path"]
-model_path = config["classification"]["model"]
-label_path = config["classification"].get("labels", "")
+model_path = "/share/uas.tflite"
+label_path = "/share/uas.txt"
 
 print(f"Using model: {model_path}", flush=True)
 if label_path:
