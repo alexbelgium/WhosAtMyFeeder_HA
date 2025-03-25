@@ -27,10 +27,9 @@ if label_path:
     print(f"Using label file: {label_path}", flush=True)
 
 def classify(image):
-    # Manual normalization to float32 in [0, 1]
-    image = image.astype(np.float32) / 255.0
+    # Ensure it's dtype uint8
+    image = image.astype(np.uint8)
 
-    # Then create tensor and classify
     tensor_image = vision.TensorImage.create_from_array(image)
     categories = classifier.classify(tensor_image)
     return categories.classifications[0].categories
