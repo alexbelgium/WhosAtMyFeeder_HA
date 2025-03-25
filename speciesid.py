@@ -89,9 +89,6 @@ def set_sublabel(frigate_url, frigate_event, sublabel):
 
 
 def on_message(client, userdata, message):
-    global firstmessage
-    if not firstmessage:
-        return  # Already processed one valid message, skip all others
 
     conn = sqlite3.connect(DBPATH)
     payload_dict = json.loads(message.payload)
