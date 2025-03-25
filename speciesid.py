@@ -91,8 +91,8 @@ def set_sublabel(frigate_url, frigate_event, sublabel):
 def on_message(client, userdata, message):
     conn = sqlite3.connect(DBPATH)
 
-    #global firstmessage
-    #if not firstmessage:
+    global firstmessage
+    if firstmessage:
         # Convert the MQTT payload to a Python dictionary
         payload_dict = json.loads(message.payload)
 
@@ -237,9 +237,9 @@ def on_message(client, userdata, message):
                     flush=True,
                 )
 
-    #else:
-    #    firstmessage = False
-    #    print("skipping first message", flush=True)
+    else:
+        firstmessage = False
+        print("skipping first message", flush=True)
 
     conn.close()
 
