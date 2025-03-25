@@ -42,9 +42,11 @@ def classify(image):
 def on_connect(client, userdata, flags, rc):
     print("MQTT Connected", flush=True)
 
-    # we are going subscribe to frigate/events and look for bird detections there
-    client.subscribe(config["frigate"]["main_topic"] + "/events")
+    topic = config["frigate"]["main_topic"] + "/events"
+    print(f"Subscribing to retained topic: {topic}", flush=True)
 
+    # Request last retained message (if available)
+    client.subscribe(topic)
 
 def on_disconnect(client, userdata, rc):
     if rc != 0:
