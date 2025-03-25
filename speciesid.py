@@ -19,7 +19,12 @@ config = load_config()
 firstmessage = True
 
 DBPATH = config["database"]["path"]
+model_path = config["classification"]["model"]
+label_path = config["classification"].get("labels", "")
 
+print(f"Using model: {model_path}", flush=True)
+if label_path:
+    print(f"Using label file: {label_path}", flush=True)
 
 def classify(image):
     tensor_image = vision.TensorImage.create_from_array(image)
@@ -265,7 +270,7 @@ def main():
 
     # Initialize the image classification model
     base_options = core.BaseOptions(
-        file_name=config["classification"]["model"], use_coral=False, num_threads=4
+        file_name=model_path, use_coral=False, num_threads=4
     )
 
     # Enable Coral by this setting
@@ -275,6 +280,8 @@ def main():
     options = vision.ImageClassifierOptions(
         base_options=base_options, classification_options=classification_options
     )
+    if label_path:
+        options.label_file_paths = [label_path]
 
     # create classifier
     global classifier
