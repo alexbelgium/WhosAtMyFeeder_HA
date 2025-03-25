@@ -27,12 +27,17 @@ if label_path:
     print(f"Using label file: {label_path}", flush=True)
 
 def classify(image):
+    # Determine if input should be normalized based on model input tensor type
+    input_tensor_type = classifier._image_classifier.input_tensor_type()
+    
+    if input_tensor_type == vision.TensorType.FLOAT32:
+        image = image.astype(np.float32) / 255.0  # normalize for float models
+    else:
+        image = image.astype(np.uint8)  # just in case it was float before
+
     tensor_image = vision.TensorImage.create_from_array(image)
-
     categories = classifier.classify(tensor_image)
-
     return categories.classifications[0].categories
-
 
 def on_connect(client, userdata, flags, rc):
     print("MQTT Connected", flush=True)
